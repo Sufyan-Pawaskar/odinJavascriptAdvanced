@@ -2,7 +2,7 @@
   Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
 */
-
+@import url('https://fonts.googleapis.com/css2?family=Nabla&display=swap');
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -40,4 +40,47 @@ text-wrap: balance;
 isolation: isolate;
 }
 
+.leftTitle{
+    font-family: 'Nabla', serif;
+    font-size: 48px;
+}
+nav{
+    background-color: #0078ff;
+    padding: 5px;
+    position: sticky;
+}
+.wrapper{
+    padding: 20px;
+}
+table,th {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid #0078ff;
+}
+thead th:nth-child(1) {
+    width: 5%;
+}
 
+thead th:nth-child(2) {
+    width: 30%;
+}
+
+thead th:nth-child(3) {
+    width: 20%;
+}
+
+thead th:nth-child(4) {
+    width: 10%;
+}
+
+thead th:nth-child(5) {
+    width: 8%;
+}
+
+th,
+td {
+    padding: 20px;
+    font-size: larger;
+    font-weight: bolder;
+}
