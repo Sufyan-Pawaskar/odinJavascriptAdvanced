@@ -9,6 +9,11 @@
 <body>
     <nav>
         <div class="leftTitle">TOP - Library</div>
+        <div class="rightActions">
+            <button class="addBook trigger" type="submit">
+                Add Book
+            </button>
+        </div>
     </nav>
     <div class="body">
         <div class="wrapper">
@@ -23,12 +28,49 @@
                             <th>Has been Read</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tableBody">
                         <!-- adding the rows here dynamically -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <div class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Book Details</h2>
+          <br>
+          <div class="bookTitle">
+            <label for="bookName"><strong>Book Title: </strong></label>
+            <input type="text" name="bookName" id="getBookName">
+          </div>
+          <br>
+          <div class="bookAuthor">
+            <label for="bookAuthor"><strong>Book Author: </strong></label>
+            <input type="text" name="bookAuthor" id="getBookAuthor">
+          </div>
+          <br>
+          <div class="bookPages">
+            <label for="bookPages"><strong>Book no.of Pages: </strong></label>
+            <input type="text" name="bookPages" id="getBookPages">
+          </div>
+          <br>
+          <div class="bookRead">
+            <label for="bookRead"><strong>Has the book been read: </strong></label>
+            <!-- <input type="drop" name="bookRead" id="getBookRead"> -->
+             <select name="bookRead" id="getBookRead">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+             </select>
+          </div>
+          <br>
+            <div class="modal-buttons">
+                <button class="close modalButton" type="button">Close</button>
+                <button class="submit-button modalButton" type="button">Submit</button>
+            </div>
+        </div>
+        
+    </div>
+    <script src="app.js"></script>
 </body>
 </html>
