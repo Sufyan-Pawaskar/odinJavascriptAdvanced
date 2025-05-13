@@ -39,3 +39,38 @@ text-wrap: balance;
 #root, #__next {
 isolation: isolate;
 }
+.body{
+  width: 98vw;
+  height: 98vh;
+  display: flex;
+}
+.leftCont{
+  width: 30%;
+  height: 100%;
+  background-color: brown;
+}
+.rightCont{
+  width: 30%;
+  height: 100%;
+  background-color: blueviolet;
+}
+.midCont{
+  width: 40%;
+  height: 100%;
+  background-color: black;
+}
+
+.gameBoard{
+  display: grid;
+  grid-template-columns: 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px;
+  row-gap: 10px;
+  column-gap: 10px;
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* justify-items: center; */
+}
+
+.gamediv{
+  background-color: #8ca0ff;
+}
