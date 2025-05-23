@@ -149,6 +149,8 @@ function controller(board){
                     let validBoardEntry = board.checkValid(row,cell);
                     if (validBoardEntry){
                         board.updateBoard(row,cell,value);
+                    } else{
+                        validInput = false;
                     }
                 }
             }
