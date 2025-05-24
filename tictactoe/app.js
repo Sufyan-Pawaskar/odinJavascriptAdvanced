@@ -156,7 +156,7 @@ function controller(board){
         let currPlayerName = board.getCurrentPlayer().name;
         let currPlayerMarker = board.getCurrentPlayer().getPlayerMarker();
         while (!validInput) {
-            let msg = currPlayerName+" please play your turn again, your marker is "+currPlayerMarker+" (eg.input: row,cell,value .i.e. 1,2,"+currPlayerMarker+") please enter your input here: ";
+            let msg = currPlayerName+" please play your turn, your marker is "+currPlayerMarker+" proceed by clicking empty cell on game board.";
             let playerInput = prompt(msg);
             let playerInputArr = playerInput.split(",")
             validInput = playerInputArr.length == 3 ? true : false;
@@ -187,7 +187,7 @@ function controller(board){
     return{getPlayerInput}
 }
 
-function playGame (){
+function playGame(pl1,pl2){
     let players = false;
     var playerOne;
     var playerTwo;
@@ -196,12 +196,12 @@ function playGame (){
             players = true;
         }
         if (!playerOne){
-            playerOne = createPlayer(prompt("Player 1 please enter your name here and press enter: "),1);
+            playerOne = createPlayer(pl1,1);
             playerOne.updatePlayerMarker("X");
             console.log(playerOne.name, " created with marker, ",playerOne.getPlayerMarker());
         }
         if (!playerTwo){
-            playerTwo = createPlayer(prompt("Player 2 please enter your name here and press enter: "),2);
+            playerTwo = createPlayer(pl2,2);
             playerTwo.updatePlayerMarker("O");
             console.log(playerTwo.name," created with marker, ",playerTwo.getPlayerMarker());
         }
@@ -213,8 +213,10 @@ function playGame (){
     gameBoard.printBoard();
     let gameController = controller(gameBoard);
     while (!gameBoard.checkBoardWinner(playerOne,playerTwo).winner && !gameBoard.checkBoardTie()) {
-        let playerInTurn = gameBoard.getCurrentPlayer()
-        console.log("Currently player's ",playerInTurn.name," needs to play for ", playerInTurn.getPlayerMarker());
+        let playerInTurn = gameBoard.getCurrentPlayer();
+        let msg = "Currently player's "+playerInTurn.name+" needs to play for "+ playerInTurn.getPlayerMarker()
+        console.log(msg);
+        updateMessage(msg);
         gameController.getPlayerInput();
         if (gameBoard.getCurrentPlayer().number == 1){
             gameBoard.updateCurrentPlayer(playerTwo);
@@ -236,3 +238,37 @@ function playGame (){
     }
 }
 
+const getInput = function(ele){
+    let value = ele.value;
+    return value;
+};
+
+const updateMessage = function(msgContent){
+    const messageArea = document.getElementById("messageAreaDiv");
+    messageArea.textContent = msgContent;
+}
+
+const startGame = function(){
+    let playerInput1 = getInput(playerOneInp);
+    let playerInput2 = getInput(playerTwoInp);
+    if (playerInput1 && playerInput2){
+        playGame(playerInput1,playerInput2);
+        updateMessage("");
+    }
+    updateMessage("Please enter Player names before proceeding with the game.")
+}
+
+document.addEventListener("DOMContentLoaded",(event)=>{
+    console.log("DomContents are loaded.!");
+    
+    let playerOneInp = document.getElementById("playerOne");
+    let playerTwoInp = document.getElementById("playerTwo");
+    const startButton = document.getElementById("startGame");
+    const restartButton = document.getElementById("restartGame");
+    const exitButton = document.getElementById("exitGame");
+
+    startButton.addEventListener("click",(event) => {
+        startGame();
+    })
+    
+})

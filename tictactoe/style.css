@@ -3,8 +3,19 @@
   https://www.joshwcomeau.com/css/custom-css-reset/
 */
 @import url('https://fonts.googleapis.com/css2?family=Nabla&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap');
+.monoton-regular {
+  font-family: "Monoton", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 *, *::before, *::after {
     box-sizing: border-box;
+}
+.hidden{
+  display: none !important;
 }
 
 * {
@@ -12,8 +23,14 @@ margin: 0;
 }
 
 body {
-line-height: 1.5;
--webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  display: grid;
+  place-items: center;
+  width:100dvw;
+  height: 100dvh;
+  place-items: center;
+  background-color: black;
 }
 
 img, picture, video, canvas, svg {
@@ -39,38 +56,182 @@ text-wrap: balance;
 #root, #__next {
 isolation: isolate;
 }
-.body{
-  width: 98vw;
-  height: 98vh;
-  display: flex;
-}
-.leftCont{
-  width: 30%;
-  height: 100%;
-  background-color: brown;
-}
-.rightCont{
-  width: 30%;
-  height: 100%;
-  background-color: blueviolet;
-}
-.midCont{
-  width: 40%;
-  height: 100%;
-  background-color: black;
+.backgroundDiv{
+  /* position: absolute; */
+  width:100dvw;
+  height: 100dvh;
+  /* border: 2px solid black; */
+  /* display: flex; */
+  /* margin: 2% 1%;  */
+  align-items: center;
+  justify-content: center;
 }
 
-.gameBoard{
+.backdropBackgroundDiv{
+  width:91%;
+  height: 91%;
+  position: relative;
+  background: #372ded;
+background: linear-gradient(30deg, rgba(55, 45, 237, 1) 0%, rgba(217, 128, 20, 1) 57%, rgba(245, 2, 200, 1) 100%);
+}
+
+.backdropDiv{
+  /* position: absolute; */
+  width: 98%;
+  height: 96%;
+  /* padding: 1%; */
+  margin: 1%;
+  border-color: linear-gradient(30deg,rgba(78, 0, 235, 1) 4%, rgba(209, 95, 38, 1) 49%, rgba(209, 50, 209, 1) 96%);
+  background-color: rgb(0, 0, 0);
+  /* margin: 2% 1%;  */
   display: grid;
-  grid-template-columns: 50px 50px 50px;
-  grid-template-rows: 50px 50px 50px;
-  row-gap: 10px;
-  column-gap: 10px;
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* justify-items: center; */
+  grid-template-columns: 0.6fr 1fr 0.6fr;
+  grid-template-rows: 1fr ;
 }
 
-.gamediv{
-  background-color: #8ca0ff;
+.text-gradient {
+  color: #4B16F7; 
+  background-image: radial-gradient(circle, #4B16F7 , #DE971D 50%, #FF05FF 100%); 
+  background-clip: text; 
+  -webkit-background-clip: text; 
+  -webkit-text-fill-color: transparent; 
+ }
+
+.gameContainerDiv{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.15fr 1fr;
+  place-items: center;
+}
+
+.GameTitle{
+  /* color: white; */
+  font-family: "Monoton", sans-serif;
+  font-size: 4rem;
+}
+.gameArea{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.1fr 1fr 0.2fr;
+  place-items: center;
+}
+.gameGrid{
+  width: 60%;
+  height: 60%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr ;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+.item {
+  padding: 10px;
+  border-bottom: 10px solid #FF05FF;
+  /* with flexbox:
+  width: calc(50% - 21px);
+  */
+}
+
+.item{
+  font-family: "Monoton", sans-serif;
+  font-size: 1fr;
+  font-weight: bolder;
+  color: white;
+}
+
+.item:last-child, .item:nth-last-child(2),.item:nth-last-child(3) {
+  border-bottom: none;
+}
+.item:first-child, .item:nth-first-child(2),.item:nth-first-child(3) {
+  border-top: none;
+}
+
+
+/* Add right border to every second item */
+.item:nth-child(1),.item:nth-child(2),.item:nth-child(7),.item:nth-child(8),.item:nth-child(4),.item:nth-child(5){
+  border-right: 10px solid #FF05FF;
+}
+
+.playerDiv{
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.playerDetails{
+  width: 90%;
+  height: 40%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.4fr 1fr;
+}
+.input,.input:focus-visible{
+  border: 2px solid rgba(217, 128, 20, 1);
+  background-color: transparent;
+  width: 80%;
+  margin-top: 2%;
+  font-size: larger;
+  color: white !important;
+  outline: none;
+  font-family: "Coming Soon", cursive;
+}
+
+.labelPlayer{
+  color: rgba(217, 128, 20, 1);
+  align-content: end;
+  margin-bottom: 1%;
+  border-bottom: 2px solid;
+  /* border-color:#FF05FF; */
+  font-size: x-large;
+  font-family: "Coming Soon", cursive;
+  font-weight: bold;
+}
+
+.buttonsCont{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.button{
+  width: 20%;
+  height: 45%;
+  font-family: "Coming Soon", cursive;
+  font-weight: bold;
+}
+
+
+.btn-grad {background-image: linear-gradient(to right, #6441A5 0%, #2a0845  51%, #6441A5  100%)}
+.btn-grad {
+  margin: 10px;
+  /* padding: 15px 45px; */
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0px 8px 14px 0px #eee;
+  border-radius: 10px;
+  display: block;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.messageArea{
+  width: 100%;
+  height: 100%;
+  font-family: "Coming Soon", cursive;
+  font-weight: bold;
+  font-size: large;
+  color: white;
+  place-content: center;
+  text-align: center;
 }

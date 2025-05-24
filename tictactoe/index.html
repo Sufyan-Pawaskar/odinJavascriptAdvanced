@@ -7,24 +7,52 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <span>this is a tic tac toe project.</span>
-    <div class="body">
-        <div class="leftCont"></div>
-        <div class="midCont">
-            <div class="gameBoard">
-                <div id="A1_first" class="gamediv"></div>
-                <div id="B1_first" class="gamediv"></div>
-                <div id="C1_first" class="gamediv"></div>
-                <div id="A2_second" class="gamediv"></div>
-                <div id="B2_second" class="gamediv"></div>
-                <div id="C2_second" class="gamediv"></div>
-                <div id="A3_third" class="gamediv"></div>
-                <div id="B3_third" class="gamediv"></div>
-                <div id="C3_third" class="gamediv"></div>
+    <!-- <span>this is a tic tac toe project.</span> -->
+    <div class="backdropBackgroundDiv">
+        <div class="backdropDiv">
+            <div class="playerDiv">
+                <div class="playerDetails">
+                    <div class="labelPlayer">Enter Player1 (X) name here: </div>
+                    <div class="playerOneInput">
+                        <input class="input" type="text" name="Player1" id="playerOne">
+                    </div>
+                </div>
+            </div>
+            <div class="gameContainerDiv">
+                <div class="GameTitle monoton-regular text-gradient">
+                    TicTacToe
+                </div>
+                <div class="gameArea">
+                    <div id="messageAreaDiv" class="messageArea"></div>
+                    <div class="gameGrid">
+                        <a id="F1" class="item" href="#blank" data-row="first" data-cell="A1"></a>
+                        <a id="F2" class="item" href="#blank" data-row="first" data-cell="B1"></a>
+                        <a id="F3" class="item" href="#blank" data-row="first" data-cell="C1"></a>
+                        <a id="S1" class="item" href="#blank" data-row="second" data-cell="A2"></a>
+                        <a id="S2" class="item" href="#blank" data-row="second" data-cell="B2"></a>
+                        <a id="S3" class="item" href="#blank" data-row="second" data-cell="C2"></a>
+                        <a id="T1" class="item" href="#blank" data-row="third" data-cell="A3"></a>
+                        <a id="T2" class="item" href="#blank" data-row="third" data-cell="B3"></a>
+                        <a id="T3" class="item" href="#blank" data-row="third" data-cell="C3"></a>
+                    </div>
+                    <div class="buttonsCont">
+                        <button class="button btn-grad" id="startGame">Start Game</button>
+                        <button class="button btn-grad hidden" id="restartGame">Restart Game</button>
+                        <button class="button btn-grad hidden" id="exitGame">Exit Game</button>
+                    </div>
+                </div>
+            </div>
+            <div class="playerDiv">
+                <div class="playerDetails">
+                    <div class="labelPlayer">Enter Player2 (O) name here: </div>
+                    <div class="playerTwoInput">
+                        <input class="input" type="text" name="Player2" id="playerTwo">
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="rightCont"></div>
     </div>
+    
     <script src="app.js"></script>
 </body>
 </html>
