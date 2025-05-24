@@ -134,9 +134,11 @@ background: linear-gradient(30deg, rgba(55, 45, 237, 1) 0%, rgba(217, 128, 20, 1
 
 .item{
   font-family: "Monoton", sans-serif;
-  font-size: 1fr;
+  font-size: 4em;
   font-weight: bolder;
   color: white;
+  text-align: center;
+  text-decoration: none;
 }
 
 .item:last-child, .item:nth-last-child(2),.item:nth-last-child(3) {
@@ -145,7 +147,6 @@ background: linear-gradient(30deg, rgba(55, 45, 237, 1) 0%, rgba(217, 128, 20, 1
 .item:first-child, .item:nth-first-child(2),.item:nth-first-child(3) {
   border-top: none;
 }
-
 
 /* Add right border to every second item */
 .item:nth-child(1),.item:nth-child(2),.item:nth-child(7),.item:nth-child(8),.item:nth-child(4),.item:nth-child(5){
