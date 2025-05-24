@@ -33,10 +33,12 @@ let gameBoard = (function(){
             "third":{"A3":"7","B3":"8","C3":"9"}
         };
     }
-    const updateBoard = function(rowNum,cellNum,value){
+    const updateBoard = function(rowNum,cellNum,value,ele){
         let toUpdate = checkValid(rowNum,cellNum);
         if (toUpdate){
             boardObj[rowNum][cellNum] = value;
+            ele.textContent = value;
+            ele.style.pointerEvents = "none";
         }else{
             alert("The cell already has a value entered.");
         }
@@ -124,7 +126,8 @@ let gameBoard = (function(){
         let firstObj = Object.values(boardObj["first"]);
         let secondObj = Object.values(boardObj["second"]);
         let thirdObj = Object.values(boardObj["third"]);
-        let tie = (firstObj.includes("X","O") && secondObj.includes("X","O") && thirdObj.includes("X","O"));
+        let tie = (!checkArr(firstObj,['1',"2","3"]) && !checkArr(secondObj,['4',"5","6"]) && !checkArr(thirdObj,['7',"8","9"]));
+        console.log("Is Tie: ",tie)
         return tie;
     }
 
@@ -138,8 +141,29 @@ let gameBoard = (function(){
     return {updateBoard,checkValid,checkBoardWinner,checkBoardTie,initializeBoard,updateCurrentPlayer,getCurrentPlayer,printBoard}
 })();
 
-function controller(board){
-    console.log
+function checkArr(arr,ele){
+    var isElement = false;
+    ele.forEach((el) => {
+        arr.forEach((arrEl)=>{
+            // console.log("arrEl: ",arrEl," el: ",el )
+            if (el === arrEl){
+                console.log("arrEl: ",arrEl," el: ",el );
+                isElement = true;
+            }
+        })
+    })
+    return isElement
+}
+
+
+
+function controller(board,pl1,pl2){
+
+    let players = {
+        "player1":pl1,
+        "player2":pl2,
+    };
+
     let boardRowTrans = {
         "1":"first",
         "2":"second",
@@ -150,92 +174,88 @@ function controller(board){
         "second" : {"1":"A2","2":"B2","3":"C2"},
         "third" : {"1":"A3","2":"B3","3":"C3"}
     }
-    
-    const getPlayerInput = function(){
+    const switchTurn= function(currPlayer){
+        if (board.getCurrentPlayer().number == 1){
+            board.updateCurrentPlayer(players["player2"]);
+        } else{
+            board.updateCurrentPlayer(players["player1"]);
+        }
+        let msg = board.getCurrentPlayer().name+" please play your turn, your marker is "+board.getCurrentPlayer().getPlayerMarker()+" proceed by clicking empty cell on game board."
+        updateMessage(msg)
+    };
+
+    const getPlayerInput = function(event){
+        console.log(event.target, " clicked!")
+        let clickedCell = event.target;
         let validInput = false;
         let currPlayerName = board.getCurrentPlayer().name;
         let currPlayerMarker = board.getCurrentPlayer().getPlayerMarker();
-        while (!validInput) {
-            let msg = currPlayerName+" please play your turn, your marker is "+currPlayerMarker+" proceed by clicking empty cell on game board.";
-            let playerInput = prompt(msg);
-            let playerInputArr = playerInput.split(",")
-            validInput = playerInputArr.length == 3 ? true : false;
-            if (validInput){
-                let row = boardRowTrans[playerInputArr[0]];
-                let cell = undefined;
-                if (row){
-                    cell = boardCellTrans[row][playerInputArr[1]];
-                }
-                let value = playerInputArr[2].toUpperCase();
-                
-                let validVals = (row && cell && value == currPlayerMarker) ? true : false;
-                if (!validVals){
-                    validInput = false;
-                } else if (validVals) {
-                    let validBoardEntry = board.checkValid(row,cell);
-                    if (validBoardEntry){
-                        board.updateBoard(row,cell,value);
-                    } else{
-                        validInput = false;
-                    }
-                }
+        let row = clickedCell.dataset.row;
+        let cell = clickedCell.dataset.cell;
+        let validBoardEntry = board.checkValid(row,cell);
+        if (validBoardEntry){
+            board.updateBoard(row,cell,currPlayerMarker,clickedCell);
+            let checkTie = board.checkBoardTie();
+            let winnerObj = board.checkBoardWinner(players["player1"],players["player2"]);
+            if(winnerObj.winner){
+                let winMsg = "Congrats "+ winnerObj.gameWinner+ " you have won the game.!";
+                updateMessage(winMsg);
+                console.log("Congrats ", winnerObj.gameWinner, " you have won the game.!")
+                board.printBoard();
+                restartButton.classList.remove('hidden');
+                exitButton.classList.remove('hidden');
+            } else if(checkTie){
+                let tieMsg = "Hmm.. we have a tie try again."
+                updateMessage(tieMsg);
+                console.log("Hmm.. we have a tie try again.");
+                board.printBoard();
+                restartButton.classList.remove('hidden');
+                exitButton.classList.remove('hidden')
+            } else{
+                switchTurn(board.getCurrentPlayer());
             }
+        }else{
+            msg = currPlayerName+" you clicked on an occupied cell, please play your turn again your marker is "+currPlayerMarker+" proceed by clicking empty cell on game board."
+            updateMessage(msg)
         }
-        console.log(currPlayerName,"'s turn has been completed!");
-        board.printBoard();
     }
     return{getPlayerInput}
 }
 
-function playGame(pl1,pl2){
+function playGame(pl1,pl2,startButton,restartButton,exitButton){
+    startButton.classList.add('hidden')
+
     let players = false;
     var playerOne;
     var playerTwo;
-    while (!players) {
-        if (playerOne && playerTwo){
-            players = true;
-        }
-        if (!playerOne){
-            playerOne = createPlayer(pl1,1);
-            playerOne.updatePlayerMarker("X");
-            console.log(playerOne.name, " created with marker, ",playerOne.getPlayerMarker());
-        }
-        if (!playerTwo){
-            playerTwo = createPlayer(pl2,2);
-            playerTwo.updatePlayerMarker("O");
-            console.log(playerTwo.name," created with marker, ",playerTwo.getPlayerMarker());
-        }
-    };
+    if (playerOne && playerTwo){
+        players = true;
+    }
+    if (!playerOne){
+        playerOne = createPlayer(pl1,1);
+        playerOne.updatePlayerMarker("X");
+        console.log(playerOne.name, " created with marker, ",playerOne.getPlayerMarker());
+    }
+    if (!playerTwo){
+        playerTwo = createPlayer(pl2,2);
+        playerTwo.updatePlayerMarker("O");
+        console.log(playerTwo.name," created with marker, ",playerTwo.getPlayerMarker());
+    }
     console.log("playerOne.getPlayerMarker()",playerOne)
     gameBoard.initializeBoard();
     console.log("GameBoard has been intialized.");
     gameBoard.updateCurrentPlayer(playerOne);//by default first turn would be for player one.
     gameBoard.printBoard();
-    let gameController = controller(gameBoard);
-    while (!gameBoard.checkBoardWinner(playerOne,playerTwo).winner && !gameBoard.checkBoardTie()) {
-        let playerInTurn = gameBoard.getCurrentPlayer();
-        let msg = "Currently player's "+playerInTurn.name+" needs to play for "+ playerInTurn.getPlayerMarker()
-        console.log(msg);
-        updateMessage(msg);
-        gameController.getPlayerInput();
-        if (gameBoard.getCurrentPlayer().number == 1){
-            gameBoard.updateCurrentPlayer(playerTwo);
-        } else{
-            gameBoard.updateCurrentPlayer(playerOne);
-        }
-        console.log(gameBoard.checkBoardWinner(playerOne,playerTwo))
-    }
-
-    //once the code reaches this stage that means either the game is tied or else we have a winner.
-    let checkTie = gameBoard.checkBoardTie();
-    let winnerObj = gameBoard.checkBoardWinner(playerOne,playerTwo);
-    if(winnerObj.winner){
-        console.log("Congrats ", winnerObj.gameWinner, " you have won the game.!")
-        gameBoard.printBoard();
-    } else if(checkTie){
-        console.log("Hmm.. we have a tie try again.");
-        gameBoard.printBoard();
-    }
+    let msg = gameBoard.getCurrentPlayer().name+" please play your turn, your marker is "+gameBoard.getCurrentPlayer().getPlayerMarker()+" proceed by clicking empty cell on game board."
+    updateMessage(msg)
+    let gameController = controller(gameBoard,playerOne,playerTwo);
+    const grid = document.querySelectorAll(".item");
+    grid.forEach(cell => {
+        cell.textContent="";
+        cell.addEventListener("click",(event)=>{
+            gameController.getPlayerInput(event);
+        })
+    });
 }
 
 const getInput = function(ele){
@@ -246,29 +266,46 @@ const getInput = function(ele){
 const updateMessage = function(msgContent){
     const messageArea = document.getElementById("messageAreaDiv");
     messageArea.textContent = msgContent;
+    console.log("updated the following message: ",msgContent)
 }
 
-const startGame = function(){
-    let playerInput1 = getInput(playerOneInp);
-    let playerInput2 = getInput(playerTwoInp);
-    if (playerInput1 && playerInput2){
-        playGame(playerInput1,playerInput2);
-        updateMessage("");
-    }
-    updateMessage("Please enter Player names before proceeding with the game.")
-}
 
+var startButton = document.getElementById("startGame");
+var restartButton = document.getElementById("restartGame");
+var exitButton = document.getElementById("exitGame");
 document.addEventListener("DOMContentLoaded",(event)=>{
     console.log("DomContents are loaded.!");
     
     let playerOneInp = document.getElementById("playerOne");
     let playerTwoInp = document.getElementById("playerTwo");
-    const startButton = document.getElementById("startGame");
-    const restartButton = document.getElementById("restartGame");
-    const exitButton = document.getElementById("exitGame");
+    
+    restartButton.classList.add('hidden');
+    exitButton.classList.add('hidden');
+    startButton.classList.remove('hidden');
 
+    const startGame = function(){
+        restartButton.classList.add('hidden');
+        exitButton.classList.add('hidden');
+        startButton.classList.remove('hidden');
+        let playerInput1 = getInput(playerOneInp);
+        let playerInput2 = getInput(playerTwoInp);
+        if (playerInput1 && playerInput2){
+            playGame(playerInput1,playerInput2,startButton,restartButton,exitButton);
+            // updateMessage("");
+        }else{
+            updateMessage("Please enter Player names before proceeding with the game.")
+        }
+        
+    }
     startButton.addEventListener("click",(event) => {
         startGame();
+    });
+    restartButton.addEventListener("click",(event)=>{
+        // updateMessage("");
+        window.location.reload();
+    })
+    exitButton.addEventListener("click",(event)=>{
+        window.location.reload();
     })
     
 })
