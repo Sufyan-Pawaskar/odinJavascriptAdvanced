@@ -28,9 +28,9 @@ let gameBoard = (function(){
     }
     const initializeBoard = function(){
         boardObj = {
-            "first":{"A1":"","B1":"","C1":""},
-            "second":{"A2":"","B2":"","C2":""},
-            "third":{"A3":"","B3":"","C3":""}
+            "first":{"A1":"1","B1":"2","C1":"3"},
+            "second":{"A2":"4","B2":"5","C2":"6"},
+            "third":{"A3":"7","B3":"8","C3":"9"}
         };
     }
     const updateBoard = function(rowNum,cellNum,value){
@@ -43,46 +43,72 @@ let gameBoard = (function(){
         
     }
     const checkValid = function (rowNum,cellNum){
-        if(boardObj[rowNum][cellNum] === ""){
+        if(boardObj[rowNum][cellNum] !== "X" || boardObj[rowNum][cellNum] !=="O"){
             return true;
         }else{
             return false;
         }
     }
     const checkBoardWinner = function (playerone,playertwo){
-        let firstObj = Object.values(boardObj["first"]);
-        let secondObj = Object.values(boardObj["second"]);
-        let thirdObj = Object.values(boardObj["third"]);
+        let firstObjArr = Object.values(boardObj["first"]);
+        let secondObjArr = Object.values(boardObj["second"]);
+        let thirdObjArr = Object.values(boardObj["third"]);
         let winner = false;
         let playeroneMarker = playerone.getPlayerMarker();
         let playertwoMarker = playertwo.getPlayerMarker();
         let marker = "";
         let gameWinner = "";
-        if (!firstObj.includes("") && !secondObj.includes("") && !thirdObj.includes("")){
-            if(firstObj["A1"] === firstObj["B1"] && firstObj["B1"] === firstObj["C1"]){
-                winner = true;
-                marker = firstObj["A1"];
-            } else if(secondObj["A2"] === secondObj["B2"] && secondObj["B2"] === secondObj["C2"]){
-                winner = true;
-                marker = secondObj["A2"]             
-            } else if(thirdObj["A3"] === thirdObj["B3"] && thirdObj["B3"] === thirdObj["C3"]){
-                winner = true;
-                marker = thirdObj["A3"]
+        console.log("checking for the winner!")
+        console.log(firstObjArr,secondObjArr,thirdObjArr)
+        if ((firstObjArr.includes("X") || firstObjArr.includes("O")) || (secondObjArr.includes("X") || secondObjArr.includes("O")) || (thirdObjArr.includes("X") || thirdObjArr.includes("O"))){
+            let firstObj = boardObj["first"];
+            let secondObj = boardObj["second"];
+            let thirdObj = boardObj["third"];
+            console.log(">>>>>>>>board not empty checking the conditions now!")
+            console.log(">>>>>>>>checking first horizontal condition")
+            if((firstObj["A1"] === firstObj["B1"] && firstObj["B1"] === firstObj["C1"])&&(!firstObjArr.includes(""))){
+               console.log(firstObj)
+               marker = firstObj["A1"];
+               if (marker){
+                    winner = true;
+                    console.log('>>>>>>>>the following condition is true: firstObj["A1"] === firstObj["B1"] && firstObj["B1"] === firstObj["C1"]')
+               }
+            } else if((secondObj["A2"] === secondObj["B2"] && secondObj["B2"] === secondObj["C2"]) &&(!secondObjArr.includes(""))){
+                marker = secondObj["A2"];
+                if (marker){
+                    winner = true;
+               }
+            } else if((thirdObj["A3"] === thirdObj["B3"] && thirdObj["B3"] === thirdObj["C3"]) &&(!thirdObjArr.includes(""))){
+                marker = thirdObj["A3"];
+                console.log("3rd horizontal line check marker: ",marker," thirdObj: ",thirdObj);
+                if (marker){
+                    winner = true;
+               }
             } else if(firstObj["A1"] == secondObj["A2"] && secondObj["A2"] == thirdObj["A3"]){
-                winner = true;
                 marker = firstObj["A1"]
+                if (marker){
+                    winner = true;
+               }
             } else if(firstObj["B1"] == secondObj["B2"] && secondObj["B2"] == thirdObj["B3"]){
-                winner = true;
                 marker = firstObj["B1"];
+                if (marker){
+                    winner = true;
+               }
             } else if(firstObj["C1"] == secondObj["C2"] && secondObj["C2"] == thirdObj["C3"]){
-                winner = true;
                 marker = firstObj["C1"]
+                if (marker){
+                    winner = true;
+               }
             } else if(firstObj["A1"] == secondObj["B2"] && secondObj["B2"] == thirdObj["C3"]){
-                winner = true;
                 marker = firstObj["A1"]
+                if (marker){
+                    winner = true;
+               }
             } else if(firstObj["C1"] == secondObj["B2"] && secondObj["B2"] == thirdObj["A3"]){
-                winner = true;
                 marker = firstObj["C1"]
+                if (marker){
+                    winner = true;
+               }
             }
         };
         if(winner){
@@ -186,8 +212,7 @@ function playGame (){
     gameBoard.updateCurrentPlayer(playerOne);//by default first turn would be for player one.
     gameBoard.printBoard();
     let gameController = controller(gameBoard);
-    
-    while (!gameBoard.checkBoardWinner(playerOne,playerTwo).winner || !gameBoard.checkBoardTie()) {
+    while (!gameBoard.checkBoardWinner(playerOne,playerTwo).winner && !gameBoard.checkBoardTie()) {
         let playerInTurn = gameBoard.getCurrentPlayer()
         console.log("Currently player's ",playerInTurn.name," needs to play for ", playerInTurn.getPlayerMarker());
         gameController.getPlayerInput();
@@ -196,16 +221,17 @@ function playGame (){
         } else{
             gameBoard.updateCurrentPlayer(playerOne);
         }
+        console.log(gameBoard.checkBoardWinner(playerOne,playerTwo))
     }
 
     //once the code reaches this stage that means either the game is tied or else we have a winner.
     let checkTie = gameBoard.checkBoardTie();
     let winnerObj = gameBoard.checkBoardWinner(playerOne,playerTwo);
-    if(checkTie){
-        console.log("Hmm.. we have a tie try again.");
-        gameBoard.printBoard();
-    } else if(winnerObj.winner){
+    if(winnerObj.winner){
         console.log("Congrats ", winnerObj.gameWinner, " you have won the game.!")
+        gameBoard.printBoard();
+    } else if(checkTie){
+        console.log("Hmm.. we have a tie try again.");
         gameBoard.printBoard();
     }
 }
